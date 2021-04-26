@@ -1,9 +1,11 @@
+from playsound import playsound
+from renit import reinit_app
+from shape_creators import *
+from testbrain import TestBrain
+
 from tkinter import ttk
 from ttkthemes import ThemedTk
-from shape_creators import *
 import math
-from time import sleep
-from testbrain import TestBrain
 
 REC_WIDTH = 600
 REC_HEIGHT = 200
@@ -30,8 +32,8 @@ def show_time(event):
 
 
 def start_test():
+    playsound("sounds/select_sound.mp3", block=False)
     controlls_frame.grid_remove()
-    test_text_canvas.itemconfig(test_text, text="Starting....")
     test_frame.grid(row=1, column=0, pady=(20, 0))
     test_entery.focus()
 
@@ -61,6 +63,7 @@ def change_text(event):
 
 
 def show_result():
+    playsound("sounds/select_sound.mp3", block=False)
     window.focus_set()
     brain.check_answer(str(test_entery.get()))
     test_frame.grid_remove()
@@ -69,6 +72,10 @@ def show_result():
     title_canvas.itemconfig(title_text, text=brain.is_test_complete["message"])
     errors_canvas.itemconfig(errors_text, text=f"{brain.user_score['errors']} wrong words.")
     speed_canvas.itemconfig(speed_text, text=f"{brain.user_score['typing_speed']} words/second")
+
+
+def go_home():
+    reinit_app(window)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -115,48 +122,51 @@ show_result_btn = ttk.Button(test_frame, width=WIDGET_WIDTH, text="Show results"
 test_entery_label.grid(row=0, column=0)
 test_entery.grid(row=1, column=0)
 # ----------------------------------------------------------------------------------------------------------------------
-result_rec_height = REC_HEIGHT
-result_rec_width = REC_WIDTH
-small_rec_width = result_rec_width / 2
+REC_HEIGHT = REC_HEIGHT
+REC_WIDTH = REC_WIDTH
+small_rec_width = REC_WIDTH / 2
 font = "Futura 20 bold"
 test_result_frame = ttk.Frame(window)
 
+# Button to home
+home_btn = ttk.Button(test_result_frame, command=go_home, text="Redo Test", width=100)
+
 # Title canvas that displays the brain.is_test_complete["message"]
-title_canvas = tk.Canvas(test_result_frame, width=result_rec_width, height=result_rec_height,
+title_canvas = tk.Canvas(test_result_frame, width=REC_WIDTH, height=REC_HEIGHT,
                          background=BACKGROUND_COLOUR,
                          highlightthickness=0)
-title_rec = round_rectangle(title_canvas, 0, 0, result_rec_width, result_rec_height, radius=50,
+title_rec = round_rectangle(title_canvas, 0, 0, REC_WIDTH, REC_HEIGHT, radius=50,
                             fill=RECTANGLE_COLOUR,
-                            width=result_rec_width)
-title_text = title_canvas.create_text(result_rec_width / 2, result_rec_height / 2,
+                            width=REC_WIDTH)
+title_text = title_canvas.create_text(REC_WIDTH / 2, REC_HEIGHT / 2,
                                       fill=RECTANGLE_TEXT_COLOUR,
                                       font=font)
 
 # Errors canvas that displays the brain.user_score["errors"]
-errors_canvas = tk.Canvas(test_result_frame, width=small_rec_width, height=result_rec_height,
+errors_canvas = tk.Canvas(test_result_frame, width=small_rec_width, height=REC_HEIGHT,
                           background=BACKGROUND_COLOUR,
                           highlightthickness=0)
-errors_rec = round_rectangle(errors_canvas, 0, 0, small_rec_width, result_rec_height, radius=50,
+errors_rec = round_rectangle(errors_canvas, 0, 0, small_rec_width, REC_HEIGHT, radius=50,
                              fill=RED,
                              width=small_rec_width)
-errors_text = errors_canvas.create_text(small_rec_width / 2, result_rec_height / 2,
+errors_text = errors_canvas.create_text(small_rec_width / 2, REC_HEIGHT / 2,
                                         fill=RECTANGLE_TEXT_COLOUR,
                                         font=font)
 
 # Speed canvas which displayes the brain.user_score["typing_speed"]
-speed_canvas = tk.Canvas(test_result_frame, width=small_rec_width, height=result_rec_height,
+speed_canvas = tk.Canvas(test_result_frame, width=small_rec_width, height=REC_HEIGHT,
                          background=BACKGROUND_COLOUR,
                          highlightthickness=0)
-speed_rec = round_rectangle(speed_canvas, 0, 0, small_rec_width, result_rec_height, radius=50,
+speed_rec = round_rectangle(speed_canvas, 0, 0, small_rec_width, REC_HEIGHT, radius=50,
                             fill=YELLOW,
                             width=small_rec_width)
-speed_text = speed_canvas.create_text(small_rec_width / 2, result_rec_height / 2,
+speed_text = speed_canvas.create_text(small_rec_width / 2, REC_HEIGHT / 2,
                                       fill=RECTANGLE_TEXT_COLOUR,
                                       font=font)
-
 title_canvas.grid(row=0, column=0, columnspan=2)
 errors_canvas.grid(row=1, column=0)
 speed_canvas.grid(row=1, column=1)
+home_btn.grid(row=2, column=0, columnspan=2)
 
 # ----------------------------------------------------------------------------------------------------------------------
 window.mainloop()

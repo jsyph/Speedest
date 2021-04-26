@@ -97,7 +97,7 @@ class TestBrain:
                 wrong_answers += 1
         self.user_score["errors"] = wrong_answers
         self.user_score["typing_speed"] = math.ceil(len(result_list) / self.time_taken)
-        print(self.user_score)
+        # print(self.user_score)
 
     def start_timer(self):
         self.start_time = dt.datetime.now().second
@@ -108,8 +108,7 @@ class TestBrain:
     def check_timer(self):
         self.end_timer()
         self.time_taken = self.stop_time - self.start_time
-        print(self.time_taken)
+        # print(self.time_taken)
         if self.time_taken >= self.difficulty_time:
-            print("Fuuuuuuuuuuuuuuuuuuuuuuuuuuuuck")
             self.is_test_complete["state"] = True
             self.is_test_complete["message"] = "Time Over!"
