@@ -1,3 +1,3 @@
 # Speedest
 
-A desktop wrting speed test wrtten in python and tkinter
+A desktop wrting speed test written in python and tkinter
